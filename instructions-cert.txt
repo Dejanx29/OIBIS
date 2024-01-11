@@ -1,0 +1,13 @@
+Create cetificate command
+
+// pravimo glavni sertifikat pomocu kog cemo potpisati ostale
+makecert -n "CN=ContactAsistentCA" -r -sv ContactAsistentCA.pvk ContactAsistentCA.cer
+// sertifikat koji ce koristiti nas sistem - servis
+makecert -sv contactAsistentService.pvk -iv ContactAsistentCA.pvk -n "CN=contactAsistentService" -pe -ic ContactAsistentCA.cer contactAsistentService.cer -sr localmachine -ss My -sky exchange
+pvk2pfx.exe /pvk contactAsistentService.pvk /pi 1111 /spc contactAsistentService.cer /pfx contactAsistentService.pfx
+// sertifikat studenta
+makecert -sv student.pvk -iv ContactAsistentCA.pvk -n "CN=student , OU=Student" -pe -ic ContactAsistentCA.cer student.cer -sr localmachine -ss My -sky exchange
+pvk2pfx.exe /pvk student.pvk /pi 1111 /spc student.cer /pfx student.pfx
+// sertifikat asistenta
+makecert -sv asistent.pvk -iv ContactAsistentCA.pvk -n "CN=asistent , OU=Asistent" -pe -ic ContactAsistentCA.cer asistent.cer -sr localmachine -ss My -sky exchange
+pvk2pfx.exe /pvk asistent.pvk /pi 1111 /spc asistent.cer /pfx asistent.pfx
